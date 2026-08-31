@@ -29,29 +29,31 @@ namespace Ucu.Poo.GameOfLife
                     {
                         nextStatus= true;
                     }
-                    else if (!currentStatus &&(aliveNeighbors==3)
+                    else if (!currentStatus &&(aliveNeighbors==3))
                     //Celula nace
                     {
                         nextStatus=true;
                     }
-                    nextBoard.SetCells(x, y, nextStatus)
+                    nextBoard.SetCells(x, y, nextStatus);
                 }
             }
-            return nextBoard
+            return nextBoard;
         }
-    }
-    
-    
-    private int CountAliveNeighbors(Board board, int x, int y)
-    int count=0
-    for (int i = x-1; i<=x+1;i++)
-    {
-        for (int j = y-1;j<=y+1;j++)
+
+        private int CountAliveNeighbors(Board board, int x, int y)
         {
-            if(i>=0 && i<board.Width && j>=0 && j < board.Length && board.GetCell(i, j).IsAlive)
+            int count = 0;
+            for (int i = x-1; i<=x+1;i++)
+            {
+                for (int j = y-1;j<=y+1;j++)
                 {
-                    count++;
+                    if(i>=0 && i<board.Width && j>=0 && j<board.Length && board.GetCell(i, j).IsAlive)
+                    {
+                        count++;
+                    }
                 }
+            }
+            return count;
         }
     }
-    return count;
+}
