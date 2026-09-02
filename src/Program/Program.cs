@@ -17,8 +17,8 @@ namespace Ucu.Poo.GameOfLife
             string folder = Path.GetDirectoryName(
                 Assembly.GetExecutingAssembly().Location);
             string boardPath = Path.Combine(folder, "board.txt");
-            // Reemplaza 👇 esta línea con tu código
-            Console.WriteLine(boardPath);
+            Board tablero=BoardImporter.ImportarTablero();
+            BoardPrinter.ImprimirTablero(tablero);
         }
     }
 }

@@ -1,28 +1,47 @@
-using System.Data;
-using System.Text.RegularExpressions;
+using System;
 
 namespace Ucu.Poo.GameOfLife
 {
     public class Board
     {
         private bool[,] cells;
-        public bool[,] Cells
+
+        public bool[,] GetCells()
         {
-            get{return cells;} 
-            set {Cells = value;}
+            return cells;
         }
-        
-        public Board(bool[,] tablero)
+
+        public bool GetCell(int x, int y)
         {
-            this.cells = tablero;
+            return cells[x, y];
         }
-        public int height
+
+        public void SetCell(int posX, int posY, bool valor)
         {
-            get {return cells.GetLength(0);}
+            cells[posX, posY] = valor;
         }
-        public int width
+
+        private int width;
+        public int Width
         {
-            get {return cells.GetLength(1);}
+            get { return width; }
+            set { width = value; }
         }
+
+        private int height;
+        public int Height
+        {
+            get { return height; }
+            set { height = value; }
+        }
+
+        public Board(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+            this.cells = new bool[width, height];
+        }
+
+
     }
 }

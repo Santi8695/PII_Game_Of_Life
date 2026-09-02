@@ -1,59 +1,63 @@
-//Clase que aplica las reglas del juego de la vida
-
-using System.Reflection.Metadata;
-
 namespace Ucu.Poo.GameOfLife
 {
-
-    /// <summary>
-    /// Representa el motor del juego de la vida.
-    /// </summary>
-    
     public class Engine
-    {   
-        public Board NewGeneration(Board currentBoard)
+    {
+        public static void CalcularSiguienteGeneracion(Board board)
         {
-            int width= currentBoard.width;
-            int length= currentBoard.length;
-            Board nextBoard= new Board (width, length);
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < length; y++)
-                {
-                    int aliveNeighbors= CountAliveNeighbors(currentBoard, x, y);
-                    bool currentStatus= currentBoard.GetCell(x, y).IsAlive;
-                    bool nextStatus= false;
-                    //Por defecto estan muertas, solo si se cumplen los if se ponen en vivas
-                    if (currentStatus && (aliveNeighbors==2 || aliveNeighbors==3))
-                    //Celula sobrevive
-                    {
-                        nextStatus= true;
-                    }
-                    else if (!currentStatus &&(aliveNeighbors==3))
-                    //Celula nace
-                    {
-                        nextStatus=true;
-                    }
-                    nextBoard.SetCells(x, y, nextStatus);
-                }
-            }
-            return nextBoard;
-        }
+            int boardWidth = board.Width;
+            int boardHeight = board.Height;
 
-        private int CountAliveNeighbors(Board board, int x, int y)
-        {
-            int count = 0;
-            for (int i = x-1; i<=x+1;i++)
+            Board cloneboard = new Board(boardWidth, boardHeight);
+
+            for (int x = 0; x < boardWidth; x++)
             {
-                for (int j = y-1;j<=y+1;j++)
+                for (int y = 0; y < boardHeight; y++)
                 {
-                    if(i>=0 && i<board.Width && j>=0 && j<board.Length && board.GetCell(i, j).IsAlive)
+                    int aliveNeighbors = 0;
+
+                    for (int i = x - 1; i <= x + 1; i++)
                     {
-                        count++;
+                        for (int j = y - 1; j <= y + 1; j++)
+                        {
+                            if (i >= 0 && i < boardWidth && j >= 0 && j < boardHeight && board.GetCell(i, j))
+                            {
+                                aliveNeighbors++;
+                            }
+                        }
+                    }
+
+                    if (board.GetCell(x, y))
+                    {
+                        aliveNeighbors--;
+                    }
+
+                    if (board.GetCell(x, y) && aliveNeighbors < 2)
+                    {
+                        cloneboard.SetCell(x, y, false);
+                    }
+                    else if (board.GetCell(x, y) && aliveNeighbors > 3)
+                    {
+                        cloneboard.SetCell(x, y, false);
+                    }
+                    else if (!board.GetCell(x, y) && aliveNeighbors == 3)
+                    {
+                        cloneboard.SetCell(x, y, true);
+                    }
+                    else
+                    {
+                        cloneboard.SetCell(x, y, board.GetCell(x, y));
                     }
                 }
             }
-            return count;
+
+            // Actualizamos el tablero original volcando los datos del clon
+            for (int x = 0; x < boardWidth; x++)
+            {
+                for (int y = 0; y < boardHeight; y++)
+                {
+                    board.SetCell(x, y, cloneboard.GetCell(x, y));
+                }
+            }
         }
     }
 }
